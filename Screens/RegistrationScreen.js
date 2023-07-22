@@ -10,63 +10,100 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
+  Dimensions,
+  Image,
 } from "react-native";
 
+const initialUser = {
+  avatar: "",
+  login: "",
+  email: "",
+  password: "",
+};
+
 export default function RegistrationScreen() {
+  const [user, setUser] = useState(initialUser);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  console.log(isShowKeyboard);
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
   };
 
+  const handleBtnRegister = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+    console.log(user);
+    setUser(initialUser);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
         <ImageBackground
-          style={styles.image}
+          style={
+            isShowKeyboard
+              ? { ...styles.imageBg, marginBottom: 50 }
+              : styles.imageBg
+          }
           source={require("../assets/images/photo-bg.jpg")}
+          resizeMode={"cover"}
         >
           <KeyboardAvoidingView
             behavior={Platform.OS == "ios" ? "padding" : "height"}
           >
-            <View
-              style={{
-                ...styles.form,
-                marginBottom: isShowKeyboard ? -174 : 0,
-              }}
-            >
-              <Text style={styles.formTitle}>Registration</Text>
-              <TextInput
-                style={{ ...styles.input, marginBottom: 16 }}
-                placeholder="Login"
-                placeholderTextColor={"#BDBDBD"}
-                onFocus={() => setIsShowKeyboard(true)}
-              />
-              <TextInput
-                style={{ ...styles.input, marginBottom: 16 }}
-                placeholder="Email address"
-                placeholderTextColor={"#BDBDBD"}
-                onFocus={() => setIsShowKeyboard(true)}
-              />
-              <TextInput
-                style={{ ...styles.input, marginBottom: 43 }}
-                secureTextEntry={true}
-                placeholder="Password"
-                placeholderTextColor={"#BDBDBD"}
-                onFocus={() => setIsShowKeyboard(true)}
-              />
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={styles.btn}
-                onPress={keyboardHide}
-              >
-                <Text style={styles.btnTitle}>Register</Text>
-              </TouchableOpacity>
-              <Text style={styles.linkText}>
-                Already have an account? Sign in
-              </Text>
+            <View style={styles.innerContainer}>
+              <View style={styles.wrapAvatar}>
+                <Image style={styles.imageAvatar} />
+                <TouchableOpacity activeOpacity={0.7} style={styles.btnAvatar}>
+                  <Image source={require("../assets/images/add.png")} />
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.form}>
+                <Text style={styles.formTitle}>Registration</Text>
+                <TextInput
+                  value={user.login}
+                  onChangeText={(value) =>
+                    setUser((prevState) => ({ ...prevState, login: value }))
+                  }
+                  style={{ ...styles.input, marginBottom: 16 }}
+                  placeholder="Login"
+                  placeholderTextColor={"#BDBDBD"}
+                  onFocus={() => setIsShowKeyboard(true)}
+                />
+                <TextInput
+                  value={user.email}
+                  onChangeText={(value) =>
+                    setUser((prevState) => ({ ...prevState, email: value }))
+                  }
+                  style={{ ...styles.input, marginBottom: 16 }}
+                  placeholder="Email address"
+                  placeholderTextColor={"#BDBDBD"}
+                  onFocus={() => setIsShowKeyboard(true)}
+                />
+                <TextInput
+                  value={user.password}
+                  onChangeText={(value) =>
+                    setUser((prevState) => ({ ...prevState, password: value }))
+                  }
+                  style={{ ...styles.input, marginBottom: 43 }}
+                  secureTextEntry={true}
+                  placeholder="Password"
+                  placeholderTextColor={"#BDBDBD"}
+                  onFocus={() => setIsShowKeyboard(true)}
+                />
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  style={styles.btn}
+                  onPress={handleBtnRegister}
+                >
+                  <Text style={styles.btnTitle}>Register</Text>
+                </TouchableOpacity>
+                <Text style={styles.linkText}>
+                  Already have an account? Sign in
+                </Text>
+              </View>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -80,23 +117,51 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  image: {
+  imageBg: {
+    width: Dimensions.get("screen").width,
+    height: Dimensions.get("screen").height,
     flex: 1,
-    resizeMode: "cover",
     justifyContent: "flex-end",
   },
+  innerContainer: {
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+  },
+
+  wrapAvatar: {
+    position: "relative",
+    top: 60,
+    left: "50%",
+    transform: [{ translateX: -60 }],
+    zIndex: 1,
+  },
+  imageAvatar: {
+    width: 120,
+    height: 120,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
+  },
+  btnAvatar: {
+    position: "absolute",
+    top: 81,
+    left: 107,
+    zIndex: 10,
+  },
   form: {
+    borderTopStartRadius: 25,
+    borderTopEndRadius: 25,
     paddingHorizontal: 16,
     paddingTop: 92,
     paddingBottom: 78,
     backgroundColor: "#fff",
   },
   formTitle: {
-    textAlign: "center",
+    fontFamily: "Roboto-Medium",
     fontSize: 30,
     lineHeight: 35,
     color: "#212121",
     marginBottom: 33,
+    textAlign: "center",
   },
   input: {
     borderWidth: 1,
@@ -104,7 +169,8 @@ const styles = StyleSheet.create({
     borderColor: "#E8E8E8",
     backgroundColor: "#F6F6F6",
     height: 50,
-    padding: 16,
+    paddingHorizontal: 16,
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
   },
@@ -112,20 +178,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6C00",
     borderRadius: 100,
     height: 50,
-
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
   },
   btnTitle: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    lineHeight: 19,
     color: "#FFFFFF",
-    fontSize: 16,
-    lineHeight: 19,
   },
+
   linkText: {
-    color: "#1B4371",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
+    color: "#1B4371",
     textAlign: "center",
   },
 });
