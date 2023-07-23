@@ -52,70 +52,68 @@ export default function RegistrationScreen() {
           <KeyboardAvoidingView
             behavior={Platform.OS == "ios" ? "padding" : "height"}
           >
-            <View style={styles.innerContainer}>
-              <View style={styles.wrapAvatar}>
-                <Image style={styles.imageAvatar} />
-                <TouchableOpacity activeOpacity={0.7} style={styles.btnAvatar}>
-                  <Image source={require("../assets/images/add.png")} />
-                </TouchableOpacity>
-              </View>
+            <View style={styles.wrapAvatar}>
+              <Image style={styles.imageAvatar} />
+              <TouchableOpacity activeOpacity={0.7} style={styles.btnAvatar}>
+                <Image source={require("../assets/images/add.png")} />
+              </TouchableOpacity>
+            </View>
 
-              <View style={styles.form}>
-                <Text style={styles.formTitle}>Registration</Text>
+            <View style={styles.form}>
+              <Text style={styles.formTitle}>Registration</Text>
+              <TextInput
+                value={user.login}
+                onChangeText={(value) =>
+                  setUser((prevState) => ({ ...prevState, login: value }))
+                }
+                style={{ ...styles.input, marginBottom: 16 }}
+                placeholder="Login"
+                placeholderTextColor={"#BDBDBD"}
+                onFocus={() => setIsShowKeyboard(true)}
+              />
+              <TextInput
+                value={user.email}
+                onChangeText={(value) =>
+                  setUser((prevState) => ({ ...prevState, email: value }))
+                }
+                style={{ ...styles.input, marginBottom: 16 }}
+                placeholder="Email address"
+                placeholderTextColor={"#BDBDBD"}
+                onFocus={() => setIsShowKeyboard(true)}
+              />
+              <View>
                 <TextInput
-                  value={user.login}
+                  value={user.password}
                   onChangeText={(value) =>
-                    setUser((prevState) => ({ ...prevState, login: value }))
+                    setUser((prevState) => ({
+                      ...prevState,
+                      password: value,
+                    }))
                   }
-                  style={{ ...styles.input, marginBottom: 16 }}
-                  placeholder="Login"
+                  style={{ ...styles.input, marginBottom: 43 }}
+                  secureTextEntry={true}
+                  placeholder="Password"
                   placeholderTextColor={"#BDBDBD"}
                   onFocus={() => setIsShowKeyboard(true)}
                 />
-                <TextInput
-                  value={user.email}
-                  onChangeText={(value) =>
-                    setUser((prevState) => ({ ...prevState, email: value }))
-                  }
-                  style={{ ...styles.input, marginBottom: 16 }}
-                  placeholder="Email address"
-                  placeholderTextColor={"#BDBDBD"}
-                  onFocus={() => setIsShowKeyboard(true)}
-                />
-                <View>
-                  <TextInput
-                    value={user.password}
-                    onChangeText={(value) =>
-                      setUser((prevState) => ({
-                        ...prevState,
-                        password: value,
-                      }))
-                    }
-                    style={{ ...styles.input, marginBottom: 43 }}
-                    secureTextEntry={true}
-                    placeholder="Password"
-                    placeholderTextColor={"#BDBDBD"}
-                    onFocus={() => setIsShowKeyboard(true)}
-                  />
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    style={styles.btnShow}
-                    // onPress={handleBtnShow}
-                  >
-                    <Text style={styles.btnShowTitle}>Show</Text>
-                  </TouchableOpacity>
-                </View>
                 <TouchableOpacity
                   activeOpacity={0.7}
-                  style={styles.btnRegister}
-                  onPress={handleBtnRegister}
+                  style={styles.btnShowPassword}
+                  // onPress={handleBtnShow}
                 >
-                  <Text style={styles.btnRegisterTitle}>Register</Text>
+                  <Text style={styles.btnShowPasswordTitle}>Show</Text>
                 </TouchableOpacity>
-                <Text style={styles.linkText}>
-                  Already have an account? Sign in
-                </Text>
               </View>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={styles.btnRegister}
+                onPress={handleBtnRegister}
+              >
+                <Text style={styles.btnRegisterTitle}>Register</Text>
+              </TouchableOpacity>
+              <Text style={styles.linkText}>
+                Already have an account? Sign in
+              </Text>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -135,11 +133,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
   },
-  innerContainer: {
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-  },
-
   wrapAvatar: {
     position: "relative",
     top: 60,
@@ -186,12 +179,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
   },
-  btnShow: {
+  btnShowPassword: {
     position: "absolute",
     top: 16,
     left: 305,
   },
-  btnShowTitle: {
+  btnShowPasswordTitle: {
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,

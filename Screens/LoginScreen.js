@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,35 +6,98 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Dimensions,
 } from "react-native";
 
+const initialUser = {
+  email: "",
+  password: "",
+};
+
 export default function LoginScreen() {
+  const [user, setUser] = useState(initialUser);
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+
+  const keyboardHide = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+  };
+
+  const handleBtnSignIn = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+    console.log(user);
+    setUser(initialUser);
+  };
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        style={styles.image}
-        source={require("../assets/images/photo-bg.jpg")}
-      >
-        <View style={styles.form}>
-          <Text style={styles.formTitle}>Sign in</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Email address"
-            placeholderTextColor={"#BDBDBD"}
-          />
-          <TextInput
-            style={styles.input}
-            secureTextEntry={true}
-            placeholder="Password"
-            placeholderTextColor={"#BDBDBD"}
-          />
-          <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
-            <Text style={styles.btnTitle}>Sign in</Text>
-          </TouchableOpacity>
-          <Text style={styles.linkText}>Don't have an account? Sign up</Text>
-        </View>
-      </ImageBackground>
-    </View>
+    <TouchableWithoutFeedback onPress={keyboardHide}>
+      <View style={styles.container}>
+        <ImageBackground
+          style={
+            isShowKeyboard
+              ? { ...styles.imageBg, marginBottom: 20 }
+              : styles.imageBg
+          }
+          source={require("../assets/images/photo-bg.jpg")}
+          resizeMode={"cover"}
+        >
+          <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+          >
+            <View style={styles.form}>
+              <Text style={styles.formTitle}>Sign in</Text>
+              <TextInput
+                value={user.email}
+                onChangeText={(value) =>
+                  setUser((prevState) => ({ ...prevState, email: value }))
+                }
+                style={{ ...styles.input, marginBottom: 16 }}
+                placeholder="Email address"
+                placeholderTextColor={"#BDBDBD"}
+                onFocus={() => setIsShowKeyboard(true)}
+              />
+              <View>
+                <TextInput
+                  value={user.password}
+                  onChangeText={(value) =>
+                    setUser((prevState) => ({
+                      ...prevState,
+                      password: value,
+                    }))
+                  }
+                  style={{ ...styles.input, marginBottom: 43 }}
+                  secureTextEntry={true}
+                  placeholder="Password"
+                  placeholderTextColor={"#BDBDBD"}
+                  onFocus={() => setIsShowKeyboard(true)}
+                />
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  style={styles.btnShowPassword}
+                  // onPress={handleBtnShow}
+                >
+                  <Text style={styles.btnShowPasswordTitle}>Show</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={styles.btnSignIn}
+                onPress={handleBtnSignIn}
+              >
+                <Text style={styles.btnSignInTitle}>Sign in</Text>
+              </TouchableOpacity>
+              <Text style={styles.linkText}>
+                Don't have an account? Sign up
+              </Text>
+            </View>
+          </KeyboardAvoidingView>
+        </ImageBackground>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -43,23 +106,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  image: {
+  imageBg: {
+    width: Dimensions.get("screen").width,
+    height: Dimensions.get("screen").height,
     flex: 1,
-    resizeMode: "cover",
     justifyContent: "flex-end",
   },
   form: {
+    borderTopStartRadius: 25,
+    borderTopEndRadius: 25,
     paddingHorizontal: 16,
     paddingTop: 32,
     paddingBottom: 144,
     backgroundColor: "#fff",
   },
   formTitle: {
-    textAlign: "center",
+    fontFamily: "Roboto-Medium",
     fontSize: 30,
     lineHeight: 35,
     color: "#212121",
     marginBottom: 33,
+    textAlign: "center",
   },
   input: {
     borderWidth: 1,
@@ -67,29 +134,41 @@ const styles = StyleSheet.create({
     borderColor: "#E8E8E8",
     backgroundColor: "#F6F6F6",
     height: 50,
-    padding: 16,
-    marginBottom: 16,
+    paddingHorizontal: 16,
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
   },
-  btn: {
+  btnShowPassword: {
+    position: "absolute",
+    top: 16,
+    left: 305,
+  },
+  btnShowPasswordTitle: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#1B4371",
+  },
+  btnSignIn: {
     backgroundColor: "#FF6C00",
     borderRadius: 100,
     height: 50,
-    marginTop: 27,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
   },
-  btnTitle: {
-    color: "#FFFFFF",
+  btnSignInTitle: {
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
+    color: "#FFFFFF",
   },
   linkText: {
-    color: "#1B4371",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
+    color: "#1B4371",
     textAlign: "center",
   },
 });
