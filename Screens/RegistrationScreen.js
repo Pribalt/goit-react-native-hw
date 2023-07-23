@@ -82,23 +82,35 @@ export default function RegistrationScreen() {
                   placeholderTextColor={"#BDBDBD"}
                   onFocus={() => setIsShowKeyboard(true)}
                 />
-                <TextInput
-                  value={user.password}
-                  onChangeText={(value) =>
-                    setUser((prevState) => ({ ...prevState, password: value }))
-                  }
-                  style={{ ...styles.input, marginBottom: 43 }}
-                  secureTextEntry={true}
-                  placeholder="Password"
-                  placeholderTextColor={"#BDBDBD"}
-                  onFocus={() => setIsShowKeyboard(true)}
-                />
+                <View>
+                  <TextInput
+                    value={user.password}
+                    onChangeText={(value) =>
+                      setUser((prevState) => ({
+                        ...prevState,
+                        password: value,
+                      }))
+                    }
+                    style={{ ...styles.input, marginBottom: 43 }}
+                    secureTextEntry={true}
+                    placeholder="Password"
+                    placeholderTextColor={"#BDBDBD"}
+                    onFocus={() => setIsShowKeyboard(true)}
+                  />
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={styles.btnShow}
+                    // onPress={handleBtnShow}
+                  >
+                    <Text style={styles.btnShowTitle}>Show</Text>
+                  </TouchableOpacity>
+                </View>
                 <TouchableOpacity
                   activeOpacity={0.7}
-                  style={styles.btn}
+                  style={styles.btnRegister}
                   onPress={handleBtnRegister}
                 >
-                  <Text style={styles.btnTitle}>Register</Text>
+                  <Text style={styles.btnRegisterTitle}>Register</Text>
                 </TouchableOpacity>
                 <Text style={styles.linkText}>
                   Already have an account? Sign in
@@ -174,7 +186,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
   },
-  btn: {
+  btnShow: {
+    position: "absolute",
+    top: 16,
+    left: 305,
+  },
+  btnShowTitle: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#1B4371",
+  },
+  btnRegister: {
     backgroundColor: "#FF6C00",
     borderRadius: 100,
     height: 50,
@@ -182,7 +205,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 16,
   },
-  btnTitle: {
+  btnRegisterTitle: {
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
