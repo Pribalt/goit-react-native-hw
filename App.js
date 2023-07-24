@@ -23,8 +23,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {/* <RegistrationScreen onLayout={onLayoutRootView} /> */}
-      <LoginScreen onLayout={onLayoutRootView} />
+      <RegistrationScreen onLayout={onLayoutRootView} />
+      {/* <LoginScreen onLayout={onLayoutRootView} /> */}
     </View>
   );
 }

@@ -78,9 +78,12 @@ export default function LoginScreen() {
                 <TouchableOpacity
                   activeOpacity={0.7}
                   style={styles.btnShowPassword}
-                  // onPress={handleBtnShow}
                 >
-                  <Text style={styles.btnShowPasswordTitle}>Show</Text>
+                  {user.password ? (
+                    <Text style={styles.btnShowPasswordTitle}>Show</Text>
+                  ) : (
+                    false
+                  )}
                 </TouchableOpacity>
               </View>
               <TouchableOpacity

@@ -15,7 +15,6 @@ import {
 } from "react-native";
 
 const initialUser = {
-  avatar: "",
   login: "",
   email: "",
   password: "",
@@ -24,6 +23,11 @@ const initialUser = {
 export default function RegistrationScreen() {
   const [user, setUser] = useState(initialUser);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [isShowAvatar, setIsShowAvatar] = useState(null);
+
+  const handelAddAvatar = () => {
+    setIsShowAvatar(true);
+  };
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
@@ -32,6 +36,7 @@ export default function RegistrationScreen() {
 
   const handleBtnRegister = () => {
     setIsShowKeyboard(false);
+    setIsShowAvatar(false);
     Keyboard.dismiss();
     console.log(user);
     setUser(initialUser);
@@ -53,9 +58,20 @@ export default function RegistrationScreen() {
             behavior={Platform.OS == "ios" ? "padding" : "height"}
           >
             <View style={styles.wrapAvatar}>
-              <Image style={styles.imageAvatar} />
-              <TouchableOpacity activeOpacity={0.7} style={styles.btnAvatar}>
-                <Image source={require("../assets/images/add.png")} />
+              {isShowAvatar && (
+                <Image source={require("../assets/images/avatar.png")} />
+              )}
+
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={styles.btnAvatar}
+                onPress={handelAddAvatar}
+              >
+                {isShowAvatar ? (
+                  <Image source={require("../assets/images/close.png")} />
+                ) : (
+                  <Image source={require("../assets/images/add.png")} />
+                )}
               </TouchableOpacity>
             </View>
 
@@ -99,9 +115,12 @@ export default function RegistrationScreen() {
                 <TouchableOpacity
                   activeOpacity={0.7}
                   style={styles.btnShowPassword}
-                  // onPress={handleBtnShow}
                 >
-                  <Text style={styles.btnShowPasswordTitle}>Show</Text>
+                  {user.password ? (
+                    <Text style={styles.btnShowPasswordTitle}>Show</Text>
+                  ) : (
+                    false
+                  )}
                 </TouchableOpacity>
               </View>
               <TouchableOpacity
@@ -139,8 +158,6 @@ const styles = StyleSheet.create({
     left: "50%",
     transform: [{ translateX: -60 }],
     zIndex: 1,
-  },
-  imageAvatar: {
     width: 120,
     height: 120,
     backgroundColor: "#F6F6F6",
