@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
   Text,
@@ -11,45 +12,84 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Dimensions,
+  Image,
 } from "react-native";
 
 const initialUser = {
+  login: "",
   email: "",
   password: "",
 };
 
-export default function LoginScreen() {
+export default function RegistrationScreen() {
   const [user, setUser] = useState(initialUser);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [isShowAvatar, setIsShowAvatar] = useState(null);
+
+  const navigation = useNavigation();
+
+  const handelAddAvatar = () => {
+    setIsShowAvatar(true);
+  };
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
   };
 
-  const handleBtnSignIn = () => {
+  const handleBtnRegister = () => {
     setIsShowKeyboard(false);
+    setIsShowAvatar(false);
     Keyboard.dismiss();
     console.log(user);
     setUser(initialUser);
   };
+
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
         <ImageBackground
           style={
             isShowKeyboard
-              ? { ...styles.imageBg, marginBottom: 20 }
+              ? { ...styles.imageBg, marginBottom: 50 }
               : styles.imageBg
           }
-          source={require("../assets/images/photo-bg.jpg")}
+          source={require("../../assets/images/photo-bg.jpg")}
           resizeMode={"cover"}
         >
           <KeyboardAvoidingView
             behavior={Platform.OS == "ios" ? "padding" : "height"}
           >
+            <View style={styles.wrapAvatar}>
+              {isShowAvatar && (
+                <Image source={require("../../assets/images/avatar.png")} />
+              )}
+
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={styles.btnAvatar}
+                onPress={handelAddAvatar}
+              >
+                {isShowAvatar ? (
+                  <Image source={require("../../assets/images/close.png")} />
+                ) : (
+                  <Image source={require("../../assets/images/add.png")} />
+                )}
+              </TouchableOpacity>
+            </View>
+
             <View style={styles.form}>
-              <Text style={styles.formTitle}>Sign in</Text>
+              <Text style={styles.formTitle}>Registration</Text>
+              <TextInput
+                value={user.login}
+                onChangeText={(value) =>
+                  setUser((prevState) => ({ ...prevState, login: value }))
+                }
+                style={{ ...styles.input, marginBottom: 16 }}
+                placeholder="Login"
+                placeholderTextColor={"#BDBDBD"}
+                onFocus={() => setIsShowKeyboard(true)}
+              />
               <TextInput
                 value={user.email}
                 onChangeText={(value) =>
@@ -88,14 +128,27 @@ export default function LoginScreen() {
               </View>
               <TouchableOpacity
                 activeOpacity={0.7}
-                style={styles.btnSignIn}
-                onPress={handleBtnSignIn}
+                style={styles.btnRegister}
+                onPress={handleBtnRegister}
               >
-                <Text style={styles.btnSignInTitle}>Sign in</Text>
+                <Text style={styles.btnRegisterTitle}>Register</Text>
               </TouchableOpacity>
-              <Text style={styles.linkText}>
-                Don't have an account? Sign up
-              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Login");
+                }}
+              >
+                <Text style={styles.linkText}>
+                  Already have an account?{" "}
+                  <Text
+                    style={{
+                      textDecorationLine: "underline",
+                    }}
+                  >
+                    Sign in
+                  </Text>
+                </Text>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -115,12 +168,29 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
   },
+  wrapAvatar: {
+    position: "relative",
+    top: 60,
+    left: "50%",
+    transform: [{ translateX: -60 }],
+    zIndex: 1,
+    width: 120,
+    height: 120,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
+  },
+  btnAvatar: {
+    position: "absolute",
+    top: 81,
+    left: 107,
+    zIndex: 10,
+  },
   form: {
     borderTopStartRadius: 25,
     borderTopEndRadius: 25,
     paddingHorizontal: 16,
-    paddingTop: 32,
-    paddingBottom: 144,
+    paddingTop: 92,
+    paddingBottom: 78,
     backgroundColor: "#fff",
   },
   formTitle: {
@@ -153,7 +223,7 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     color: "#1B4371",
   },
-  btnSignIn: {
+  btnRegister: {
     backgroundColor: "#FF6C00",
     borderRadius: 100,
     height: 50,
@@ -161,12 +231,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 16,
   },
-  btnSignInTitle: {
+  btnRegisterTitle: {
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
     color: "#FFFFFF",
   },
+
   linkText: {
     fontFamily: "Roboto-Regular",
     fontSize: 16,
