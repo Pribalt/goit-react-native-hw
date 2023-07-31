@@ -1,20 +1,58 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+// import { useNavigation } from "@react-navigation/native";
+import { Feather, Ionicons } from "@expo/vector-icons";
+// import { TouchableOpacity } from "react-native";
+import PostsScreen from ".//PostsScreen";
+import CreatePostsScreen from ".//CreatePostsScreen";
+import ProfileScreen from ".//ProfileScreen";
 
 const Home = () => {
+  const MainTab = createBottomTabNavigator();
+  //   const navigation = useNavigation();
+
   return (
-    <View style={styles.container}>
-      <Text>Home</Text>
-    </View>
+    <MainTab.Navigator
+      screenOptions={{
+        tabBarShowLabel: false,
+        headerTitleAlign: "center",
+        tabBarActiveBackgroundColor: "#FFFFFF",
+        tabBarStyle: { height: 88 },
+      }}
+    >
+      <MainTab.Screen
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Feather name="grid" size={24} color="#212121" />
+          ),
+        }}
+        name="Posts"
+        component={PostsScreen}
+      />
+      <MainTab.Screen
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name="add"
+              size={24}
+              color={focused ? "#FFFFFF" : "#BDBDBD"}
+            />
+          ),
+        }}
+        name="Create"
+        component={CreatePostsScreen}
+      />
+      <MainTab.Screen
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Feather name="user" size={24} color="#212121" />
+          ),
+        }}
+        name="Profile"
+        component={ProfileScreen}
+      />
+    </MainTab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
 
 export default Home;
