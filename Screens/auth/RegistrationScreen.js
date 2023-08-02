@@ -133,11 +133,7 @@ export default function RegistrationScreen() {
               >
                 <Text style={styles.btnRegisterTitle}>Register</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Login");
-                }}
-              >
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
                 <Text style={styles.linkText}>
                   Already have an account?{" "}
                   <Text
