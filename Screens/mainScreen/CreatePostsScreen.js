@@ -16,19 +16,42 @@ const CreatePostsScreen = () => {
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
     setPhoto(photo.uri);
-    console.log("photo", photo);
+  };
+
+  const removePhoto = async () => {
+    setPhoto(null);
   };
 
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} ref={setCamera}>
-        <View style={styles.takePhotoContainer}>
-          <ImageBackground source={{ uri: photo }} />
-        </View>
-        <TouchableOpacity onPress={takePhoto} style={styles.cameraBtn}>
-          <FontAwesome name="camera" size={24} color="#BDBDBD" />
-        </TouchableOpacity>
-      </Camera>
+      <View style={styles.cameraThumb}>
+        {photo ? (
+          <ImageBackground source={{ uri: photo }}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={removePhoto}
+              style={styles.cameraBtn}
+            >
+              <FontAwesome name="camera" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
+          </ImageBackground>
+        ) : (
+          <Camera style={styles.camera} ref={setCamera}>
+            <ImageBackground source={{ uri: photo }}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={takePhoto}
+                style={styles.cameraBtn}
+              >
+                <FontAwesome name="camera" size={24} color="#BDBDBD" />
+              </TouchableOpacity>
+            </ImageBackground>
+          </Camera>
+        )}
+      </View>
+      <Text style={styles.cameraText}>
+        {photo ? "Upload a photo" : "Edit photo"}
+      </Text>
     </View>
   );
 };
@@ -40,7 +63,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
 
-  camera: {
+  cameraThumb: {
     width: "100%",
     height: 240,
     overflow: "hidden",
@@ -48,16 +71,12 @@ const styles = StyleSheet.create({
     border: "1px solid #E8E8E8",
     borderRadius: 8,
     marginTop: 32,
-    justifyContent: "center",
-    alignItems: "center",
   },
 
-  takePhotoContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    borderColor: "#ffffff",
-    borderWidth: 1,
+  camera: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   cameraBtn: {
@@ -67,6 +86,14 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: "#ffffff",
     borderRadius: 30,
+  },
+
+  cameraText: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#BDBDBD",
+    marginTop: 8,
   },
 });
 
