@@ -1,14 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import { Camera } from "expo-camera";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Feather } from "@expo/vector-icons";
+import * as Location from "expo-location";
 
 const CreatePostsScreen = () => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(null);
+  console.log("location1", location);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      const coords = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      setLocation(coords);
+    })();
+  }, []);
 
   const navigation = useNavigation();
 
@@ -18,7 +45,9 @@ const CreatePostsScreen = () => {
   };
 
   const handlePublish = () => {
-    navigation.navigate("Posts", { photo, name, location });
+    navigation.navigate("DefaultScreen", { photo, name, location });
+    setPhoto(null);
+    setName("");
   };
 
   return (
@@ -43,8 +72,38 @@ const CreatePostsScreen = () => {
         </Camera>
       </View>
       <Text style={styles.cameraText}>
-        {photo ? "Edit photo" : "Upload a photo"}
+        {photo ? "Edit photo" : "Upload photo"}
       </Text>
+
+      <TextInput
+        value={name}
+        onChangeText={(value) => setName(value)}
+        style={{ ...styles.input, marginTop: 32 }}
+        placeholder="Name..."
+        placeholderTextColor={"#BDBDBD"}
+      />
+      <View style={{ marginTop: 16 }}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles.btnLocation}
+          onPress={() => navigation.navigate("Map", { location })}
+        >
+          <Feather
+            name="map-pin"
+            size={24}
+            color="black"
+            style={styles.locationIcon}
+          />
+        </TouchableOpacity>
+        <TextInput
+        //  value={location}
+        //  onChangeText={(value) => setLocation(value)}
+        //  style={{ ...styles.input, paddingLeft: 28 }}
+        //  placeholder="Locality..."
+        //  placeholderTextColor={"#BDBDBD"}
+        />
+      </View>
+
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={handlePublish}
@@ -101,6 +160,42 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     color: "#BDBDBD",
     marginTop: 8,
+  },
+
+  btnLocation: {
+    position: "absolute",
+    zIndex: 100,
+    top: 13,
+    left: 0,
+  },
+
+  locationIcon: {
+    color: "#BDBDBD",
+  },
+
+  input: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#E8E8E8",
+    height: 50,
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    lineHeight: 19,
+  },
+
+  sendBtn: {
+    backgroundColor: "#F6F6F6",
+    height: 51,
+    marginTop: 32,
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  sendTitle: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#BDBDBD",
   },
 });
 

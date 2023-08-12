@@ -2,11 +2,10 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import PostsScreen from ".//PostsScreen";
 import CreatePostsScreen from ".//CreatePostsScreen";
 import ProfileScreen from ".//ProfileScreen";
-import { View } from "react-native";
 
 const Home = () => {
   const MainTab = createBottomTabNavigator();
