@@ -1,15 +1,16 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useNavigation } from "@react-navigation/native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import PostsScreen from "../nestedScreens/PostsScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
 import ProfileScreen from "./ProfileScreen";
 
-const MainTab = createBottomTabNavigator();
-
 const Home = () => {
+  const MainTab = createBottomTabNavigator();
+  const navigation = useNavigation();
+
   return (
     <MainTab.Navigator
       screenOptions={{
@@ -61,7 +62,7 @@ const Home = () => {
           headerLeft: () => (
             <TouchableOpacity
               activeOpacity={0.7}
-              //   onPress={() => navigation.navigate("Posts")}
+              onPress={() => navigation.navigate("Posts")}
             >
               <Feather
                 name="arrow-left"
@@ -72,14 +73,6 @@ const Home = () => {
             </TouchableOpacity>
           ),
           headerStyle: styles.header,
-          tabBarItemStyle: {
-            flex: 0,
-            width: 70,
-            height: 40,
-            marginLeft: 31,
-            backgroundColor: "#FF6C00",
-            borderRadius: 20,
-          },
           tabBarIcon: ({ focused, color, size }) => (
             <View>
               <Ionicons
@@ -90,6 +83,15 @@ const Home = () => {
               />
             </View>
           ),
+          tabBarItemStyle: {
+            flex: 0,
+            width: 70,
+            height: 40,
+            marginLeft: 31,
+            backgroundColor: "#FF6C00",
+            borderRadius: 20,
+          },
+          tabBarStyle: { display: "none" },
         }}
       />
       <MainTab.Screen

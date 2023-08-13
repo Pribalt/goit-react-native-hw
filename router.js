@@ -27,17 +27,16 @@ export const useRoute = (isAuth) => {
         />
       </AuthStack.Navigator>
     );
-  } else {
-    return (
-      <AuthStack.Navigator>
-        <AuthStack.Screen
-          name="Home"
-          component={Home}
-          options={{ headerShown: false }}
-        />
-        <AuthStack.Screen name="Map" component={MapScreen} />
-        <AuthStack.Screen name="Comments" component={CommentsScreen} />
-      </AuthStack.Navigator>
-    );
   }
+  return (
+    <AuthStack.Navigator>
+      <AuthStack.Screen
+        name="Home"
+        component={Home}
+        options={{ headerShown: false }}
+      />
+      <AuthStack.Screen name="Map" component={MapScreen} />
+      <AuthStack.Screen name="Comments" component={CommentsScreen} />
+    </AuthStack.Navigator>
+  );
 };
