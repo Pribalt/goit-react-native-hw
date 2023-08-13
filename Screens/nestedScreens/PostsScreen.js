@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, FlatList, Image } from "react-native";
+import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 
-const DefaultScreenPosts = ({ route }) => {
+const PostsScreen = ({ route }) => {
   const [posts, setPosts] = useState([]);
   console.log("route.params", route.params);
 
@@ -14,6 +14,18 @@ const DefaultScreenPosts = ({ route }) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.userWrap}>
+        <View style={styles.userAvatar}>
+          <Image
+            style={styles.avatar}
+            source={require("..//..//assets/images/avatar.png")}
+          />
+        </View>
+        <View style={styles.userDate}>
+          <Text style={styles.name}>Natali Romanova</Text>
+          <Text style={styles.email}>email@example.com</Text>
+        </View>
+      </View>
       <FlatList
         data={posts}
         keyExtractor={(item, indx) => indx.toString()}
@@ -37,4 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DefaultScreenPosts;
+export default PostsScreen;

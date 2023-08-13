@@ -1,16 +1,15 @@
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
-import PostsScreen from ".//PostsScreen";
-import CreatePostsScreen from ".//CreatePostsScreen";
-import ProfileScreen from ".//ProfileScreen";
+import PostsScreen from "../nestedScreens/PostsScreen";
+import CreatePostsScreen from "./CreatePostsScreen";
+import ProfileScreen from "./ProfileScreen";
+
+const MainTab = createBottomTabNavigator();
 
 const Home = () => {
-  const MainTab = createBottomTabNavigator();
-  const navigation = useNavigation();
-
   return (
     <MainTab.Navigator
       screenOptions={{
@@ -31,7 +30,7 @@ const Home = () => {
           headerRight: () => (
             <TouchableOpacity
               activeOpacity={0.7}
-              onPress={() => navigation.navigate("Login")}
+              //   onPress={() => navigation.navigate("Login")}
             >
               <Feather
                 name="log-out"
@@ -42,7 +41,12 @@ const Home = () => {
             </TouchableOpacity>
           ),
           headerStyle: styles.header,
-          tabBarItemStyle: { flex: 0, width: 40, height: 40, marginLeft: 82 },
+          tabBarItemStyle: {
+            flex: 0,
+            width: 40,
+            height: 40,
+            marginLeft: 82,
+          },
           tabBarIcon: ({ focused, color, size }) => (
             <View>
               <Feather name="grid" size={24} color="#212121" />
@@ -57,7 +61,7 @@ const Home = () => {
           headerLeft: () => (
             <TouchableOpacity
               activeOpacity={0.7}
-              onPress={() => navigation.navigate("Posts")}
+              //   onPress={() => navigation.navigate("Posts")}
             >
               <Feather
                 name="arrow-left"
@@ -95,7 +99,7 @@ const Home = () => {
           headerRight: () => (
             <TouchableOpacity
               activeOpacity={0.7}
-              onPress={() => navigation.navigate("Login")}
+              //   onPress={() => navigation.navigate("Login")}
             >
               <Feather
                 name="log-out"
@@ -106,7 +110,12 @@ const Home = () => {
             </TouchableOpacity>
           ),
           headerStyle: styles.header,
-          tabBarItemStyle: { flex: 0, width: 40, height: 40, marginLeft: 31 },
+          tabBarItemStyle: {
+            flex: 0,
+            width: 40,
+            height: 40,
+            marginLeft: 31,
+          },
           tabBarIcon: ({ focused, color, size }) => (
             <View>
               <Feather name="user" size={24} color="#212121" />

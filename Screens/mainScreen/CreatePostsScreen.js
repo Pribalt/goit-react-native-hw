@@ -45,7 +45,7 @@ const CreatePostsScreen = () => {
   };
 
   const handlePublish = () => {
-    navigation.navigate("DefaultScreen", { photo, name, location });
+    navigation.navigate("Posts", { photo, name, location });
     setPhoto(null);
     setName("");
   };
