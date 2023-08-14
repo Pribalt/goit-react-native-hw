@@ -3,12 +3,11 @@ import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 
 const PostsScreen = ({ route }) => {
   const [posts, setPosts] = useState([]);
-  console.log("route.params", route.params);
+  console.log(posts);
 
   useEffect(() => {
     if (route.params) {
       setPosts((prevState) => [...prevState, route.params]);
-      console.log("posts", posts);
     }
   }, [route.params]);
 
@@ -21,7 +20,7 @@ const PostsScreen = ({ route }) => {
             source={require("..//..//assets/images/avatar.png")}
           />
         </View>
-        <View style={styles.userDate}>
+        <View>
           <Text style={styles.name}>Natali Romanova</Text>
           <Text style={styles.email}>email@example.com</Text>
         </View>
@@ -30,7 +29,7 @@ const PostsScreen = ({ route }) => {
         data={posts}
         keyExtractor={(item, indx) => indx.toString()}
         renderItem={({ item }) => (
-          <View style={{ paddingHorizontal: 16, marginBottom: 10 }}>
+          <View style={{ marginBottom: 32 }}>
             <Image
               source={{ uri: item.photo }}
               style={{ width: "100%", height: 240 }}
@@ -46,6 +45,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    paddingHorizontal: 16,
+    paddingTop: 32,
+    backgroundColor: "#ffffff",
+  },
+
+  userWrap: {
+    flex: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 32,
+  },
+
+  userAvatar: {
+    marginRight: 8,
+  },
+
+  avatar: {
+    width: 60,
+    height: 60,
+  },
+
+  name: {
+    fontFamily: "Roboto-Bold",
+    fontSize: 13,
+    lineHeight: 15,
+    color: "#212121",
+  },
+
+  email: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 11,
+    lineHeight: 13,
+    color: "#212121",
   },
 });
 

@@ -15,6 +15,12 @@ const Home = () => {
     <MainTab.Navigator
       screenOptions={{
         headerTitleAlign: "center",
+        headerTitleStyle: {
+          fontSize: 17,
+          lineHeight: 22,
+          color: "#212121",
+          fontFamily: "Roboto-Medium",
+        },
         tabBarShowLabel: false,
         tabBarActiveBackgroundColor: "#FFFFFF",
         tabBarStyle: {
@@ -56,7 +62,7 @@ const Home = () => {
         }}
       />
       <MainTab.Screen
-        name="Create"
+        name="Create publication"
         component={CreatePostsScreen}
         options={{
           headerLeft: () => (
@@ -75,12 +81,7 @@ const Home = () => {
           headerStyle: styles.header,
           tabBarIcon: ({ focused, color, size }) => (
             <View>
-              <Ionicons
-                name="add"
-                borderRadius={20}
-                size={24}
-                color="#FFFFFF"
-              />
+              <Ionicons name="add" size={24} color="#FFFFFF" />
             </View>
           ),
           tabBarItemStyle: {

@@ -17,7 +17,7 @@ const CreatePostsScreen = () => {
   const [photo, setPhoto] = useState(null);
   const [name, setName] = useState("");
   const [location, setLocation] = useState(null);
-  console.log("location1", location);
+  const [locationAdrress, setLocationAdrress] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -29,6 +29,7 @@ const CreatePostsScreen = () => {
       }
 
       let location = await Location.getCurrentPositionAsync({});
+
       const coords = {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
@@ -45,9 +46,14 @@ const CreatePostsScreen = () => {
   };
 
   const handlePublish = () => {
-    navigation.navigate("Posts", { photo, name, location });
+    navigation.navigate("Posts", { photo, name, location, locationAdrress });
+    deletePublish();
+  };
+
+  const deletePublish = () => {
     setPhoto(null);
     setName("");
+    setLocationAdrress("");
   };
 
   return (
@@ -71,6 +77,7 @@ const CreatePostsScreen = () => {
           </TouchableOpacity>
         </Camera>
       </View>
+
       <Text style={styles.cameraText}>
         {photo ? "Edit photo" : "Upload photo"}
       </Text>
@@ -82,6 +89,7 @@ const CreatePostsScreen = () => {
         placeholder="Name..."
         placeholderTextColor={"#BDBDBD"}
       />
+
       <View style={{ marginTop: 16 }}>
         <TouchableOpacity
           activeOpacity={0.7}
@@ -96,20 +104,38 @@ const CreatePostsScreen = () => {
           />
         </TouchableOpacity>
         <TextInput
-        //  value={location}
-        //  onChangeText={(value) => setLocation(value)}
-        //  style={{ ...styles.input, paddingLeft: 28 }}
-        //  placeholder="Locality..."
-        //  placeholderTextColor={"#BDBDBD"}
+          value={locationAdrress}
+          onChangeText={(value) => setLocationAdrress(value)}
+          style={{ ...styles.input, paddingLeft: 28 }}
+          placeholder="Locality..."
+          placeholderTextColor={"#BDBDBD"}
         />
       </View>
 
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={handlePublish}
-        style={styles.sendBtn}
+        disabled={photo ? false : true}
+        style={
+          photo
+            ? styles.sendBtn
+            : { ...styles.sendBtn, backgroundColor: "#F6F6F6" }
+        }
       >
-        <Text style={styles.sendTitle}>Publish</Text>
+        <Text
+          style={
+            photo ? styles.sendTitle : { ...styles.sendTitle, color: "#BDBDBD" }
+          }
+        >
+          Publish
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={deletePublish}
+        style={styles.wipeBtn}
+      >
+        <Feather name="trash-2" size={24} color="#BDBDBD" />
       </TouchableOpacity>
     </View>
   );
@@ -183,7 +209,7 @@ const styles = StyleSheet.create({
   },
 
   sendBtn: {
-    backgroundColor: "#F6F6F6",
+    backgroundColor: "#FF6C00",
     height: 51,
     marginTop: 32,
     borderRadius: 100,
@@ -195,7 +221,20 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
-    color: "#BDBDBD",
+    color: "#FFFFFF",
+  },
+
+  wipeBtn: {
+    flex: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: 120,
+    width: 70,
+    height: 40,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 20,
   },
 });
 
