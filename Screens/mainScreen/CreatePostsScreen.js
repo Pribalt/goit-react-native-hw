@@ -96,12 +96,7 @@ const CreatePostsScreen = () => {
           style={styles.btnLocation}
           onPress={() => navigation.navigate("Map", { location })}
         >
-          <Feather
-            name="map-pin"
-            size={24}
-            color="black"
-            style={styles.locationIcon}
-          />
+          <Feather name="map-pin" size={24} color="#BDBDBD" />
         </TouchableOpacity>
         <TextInput
           value={locationAdrress}
@@ -193,10 +188,6 @@ const styles = StyleSheet.create({
     zIndex: 100,
     top: 13,
     left: 0,
-  },
-
-  locationIcon: {
-    color: "#BDBDBD",
   },
 
   input: {
