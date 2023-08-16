@@ -1,4 +1,6 @@
 import React, { useCallback } from "react";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { StyleSheet, View } from "react-native";
@@ -23,7 +25,11 @@ export default function App() {
     return null;
   }
 
-  return <NavigationContainer>{routing}</NavigationContainer>;
+  return (
+    <Provider store={store}>
+      <NavigationContainer>{routing}</NavigationContainer>
+    </Provider>
+  );
 }
 
 const styles = StyleSheet.create({
