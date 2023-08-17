@@ -8,7 +8,7 @@ import "react-native-gesture-handler";
 import { useRoute } from ".//router";
 
 export default function App() {
-  const routing = useRoute({});
+  const routing = useRoute(false);
   const [fontsLoaded] = useFonts({
     "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),

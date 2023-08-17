@@ -14,6 +14,8 @@ import {
   Dimensions,
   Image,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { authSignUpUser } from "..//..//redux/auth/authOperations";
 
 const initialUser = {
   login: "",
@@ -25,6 +27,8 @@ export default function RegistrationScreen() {
   const [user, setUser] = useState(initialUser);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [isShowAvatar, setIsShowAvatar] = useState(null);
+
+  const dispatch = useDispatch();
 
   const navigation = useNavigation();
 
@@ -40,8 +44,11 @@ export default function RegistrationScreen() {
   const handleBtnRegister = () => {
     setIsShowKeyboard(false);
     setIsShowAvatar(false);
+
     Keyboard.dismiss();
-    console.log(user);
+
+    dispatch(authSignUpUser(user));
+
     setUser(initialUser);
   };
 
