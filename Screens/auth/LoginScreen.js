@@ -13,6 +13,8 @@ import {
   Keyboard,
   Dimensions,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { authSignInUser } from "..//..//redux/auth/authOperations";
 
 const initialUser = {
   email: "",
@@ -25,6 +27,8 @@ export default function LoginScreen() {
 
   const navigation = useNavigation();
 
+  const dispatch = useDispatch();
+
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
@@ -33,7 +37,7 @@ export default function LoginScreen() {
   const handleBtnSignIn = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(user);
+    dispatch(authSignInUser(user));
     setUser(initialUser);
   };
   return (
