@@ -3,9 +3,12 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 import { auth } from "..//..//firebase/config";
 import { authSlice } from "./authReducer";
+
+const { updateUserProfile, authStateChange, authSignOut } = authSlice.actions;
 
 export const authSignUpUser =
   ({ login, email, password }) =>
@@ -26,7 +29,7 @@ export const authSignUpUser =
         login: displayName,
       };
 
-      dispatch(authSlice.actions.updateUserProfile(userUpdateProfile));
+      dispatch(updateUserProfile(userUpdateProfile));
 
       console.log("user", user);
     } catch (error) {
@@ -45,4 +48,22 @@ export const authSignInUser =
     }
   };
 
-export const authSignOutUser = () => async (dispatch, getState) => {};
+export const authSignOutUser = () => async (dispatch, getState) => {
+  await signOut(auth);
+
+  dispatch(authSignOut());
+};
+
+export const authStateCahngeUser = () => async (dispatch, getState) => {
+  await onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const userUpdateProfile = {
+        userId: user.uid,
+        login: user.displayName,
+      };
+
+      dispatch(authStateChange({ stateChange: true }));
+      dispatch(updateUserProfile(userUpdateProfile));
+    }
+  });
+};

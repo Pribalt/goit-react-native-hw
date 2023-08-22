@@ -1,15 +1,22 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import PostsScreen from "../nestedScreens/PostsScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
 import ProfileScreen from "./ProfileScreen";
+import { authSignOutUser } from "..//..//redux/auth/authOperations";
 
 const Home = () => {
   const MainTab = createBottomTabNavigator();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const signOut = () => {
+    dispatch(authSignOutUser());
+  };
 
   return (
     <MainTab.Navigator
@@ -35,10 +42,7 @@ const Home = () => {
         component={PostsScreen}
         options={{
           headerRight: () => (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              //   onPress={() => navigation.navigate("Login")}
-            >
+            <TouchableOpacity activeOpacity={0.7} onPress={signOut}>
               <Feather
                 name="log-out"
                 size={24}
@@ -100,10 +104,7 @@ const Home = () => {
         component={ProfileScreen}
         options={{
           headerRight: () => (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              //   onPress={() => navigation.navigate("Login")}
-            >
+            <TouchableOpacity activeOpacity={0.7} onPress={signOut}>
               <Feather
                 name="log-out"
                 size={24}
