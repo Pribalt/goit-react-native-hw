@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import {
   View,
@@ -11,13 +12,18 @@ import {
 import { Camera } from "expo-camera";
 import { FontAwesome, Feather } from "@expo/vector-icons";
 import * as Location from "expo-location";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore";
+import { db, storage } from "..//..//firebase/config";
 
 const CreatePostsScreen = () => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
-  const [name, setName] = useState("");
+  const [comment, setComment] = useState("");
   const [location, setLocation] = useState(null);
   const [locationAdrress, setLocationAdrress] = useState("");
+
+  const { userId, login } = useSelector((state) => state.auth);
 
   useEffect(() => {
     (async () => {
@@ -46,14 +52,47 @@ const CreatePostsScreen = () => {
   };
 
   const handlePublish = () => {
-    navigation.navigate("Posts", { photo, name, location, locationAdrress });
+    uploadPostToServer();
+    navigation.navigate("Posts");
     deletePublish();
   };
 
   const deletePublish = () => {
     setPhoto(null);
-    setName("");
+    setComment("");
     setLocationAdrress("");
+  };
+
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+
+    const file = await response.blob();
+
+    const uniquePostId = Date.now().toString();
+
+    const storageRef = ref(storage, `postImage/${uniquePostId}`);
+
+    await uploadBytes(storageRef, file);
+
+    const fetchPhotoRefStorage = await getDownloadURL(storageRef);
+
+    return fetchPhotoRefStorage;
+  };
+
+  const uploadPostToServer = async () => {
+    try {
+      const photo = await uploadPhotoToServer();
+      const result = await addDoc(collection(db, "posts"), {
+        photo,
+        comment,
+        location,
+        locationAdrress,
+        userId,
+        login,
+      });
+    } catch (error) {
+      console.log(error.massage);
+    }
   };
 
   return (
@@ -83,8 +122,8 @@ const CreatePostsScreen = () => {
       </Text>
 
       <TextInput
-        value={name}
-        onChangeText={(value) => setName(value)}
+        value={comment}
+        onChangeText={(value) => setComment(value)}
         style={{ ...styles.input, marginTop: 32 }}
         placeholder="Name..."
         placeholderTextColor={"#BDBDBD"}
