@@ -47,8 +47,12 @@ const CreatePostsScreen = () => {
   const navigation = useNavigation();
 
   const takePhoto = async () => {
-    const photo = await camera.takePictureAsync();
-    setPhoto(photo.uri);
+    try {
+      const photo = await camera.takePictureAsync();
+      setPhoto(photo.uri);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handlePublish = () => {
@@ -65,15 +69,12 @@ const CreatePostsScreen = () => {
 
   const uploadPhotoToServer = async () => {
     const response = await fetch(photo);
-
     const file = await response.blob();
 
     const uniquePostId = Date.now().toString();
-
     const storageRef = ref(storage, `postImage/${uniquePostId}`);
 
     await uploadBytes(storageRef, file);
-
     const fetchPhotoRefStorage = await getDownloadURL(storageRef);
 
     return fetchPhotoRefStorage;
@@ -82,7 +83,7 @@ const CreatePostsScreen = () => {
   const uploadPostToServer = async () => {
     try {
       const photo = await uploadPhotoToServer();
-      const result = await addDoc(collection(db, "posts"), {
+      await addDoc(collection(db, "posts"), {
         photo,
         comment,
         location,

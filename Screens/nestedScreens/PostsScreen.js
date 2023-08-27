@@ -9,17 +9,28 @@ import {
   StyleSheet,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import { db } from "..//..//firebase/config";
 
-const PostsScreen = ({ route }) => {
+const PostsScreen = () => {
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-    }
-  }, [route.params]);
-
   const navigation = useNavigation();
+
+  useEffect(() => {
+    getAllPost();
+  }, []);
+
+  const getAllPost = async () => {
+    const unsubscribe = await onSnapshot(collection(db, "posts"), (data) => {
+      const updatedPosts = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setPosts(updatedPosts);
+    });
+    return () => unsubscribe();
+  };
 
   return (
     <View style={styles.container}>
@@ -59,7 +70,7 @@ const PostsScreen = ({ route }) => {
                 activeOpacity={0.7}
                 style={styles.btnComments}
                 onPress={() => {
-                  navigation.navigate("Comments");
+                  navigation.navigate("Comments", { postId: item.id });
                 }}
               >
                 <Feather
