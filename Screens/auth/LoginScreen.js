@@ -24,6 +24,7 @@ const initialUser = {
 export default function LoginScreen() {
   const [user, setUser] = useState(initialUser);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [isShowPassword, setIsShowPassword] = useState(true);
 
   const navigation = useNavigation();
 
@@ -40,6 +41,11 @@ export default function LoginScreen() {
     dispatch(authSignInUser(user));
     setUser(initialUser);
   };
+
+  const handleBtnShowPassword = () => {
+    setIsShowPassword((prevState) => !prevState);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
@@ -77,7 +83,7 @@ export default function LoginScreen() {
                     }))
                   }
                   style={{ ...styles.input, marginBottom: 43 }}
-                  secureTextEntry={true}
+                  secureTextEntry={isShowPassword}
                   placeholder="Password"
                   placeholderTextColor={"#BDBDBD"}
                   onFocus={() => setIsShowKeyboard(true)}
@@ -85,6 +91,7 @@ export default function LoginScreen() {
                 <TouchableOpacity
                   activeOpacity={0.7}
                   style={styles.btnShowPassword}
+                  onPress={handleBtnShowPassword}
                 >
                   {user.password ? (
                     <Text style={styles.btnShowPasswordTitle}>Show</Text>

@@ -27,13 +27,14 @@ export default function RegistrationScreen() {
   const [user, setUser] = useState(initialUser);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [isShowAvatar, setIsShowAvatar] = useState(null);
+  const [isShowPassword, setIsShowPassword] = useState(true);
 
   const dispatch = useDispatch();
 
   const navigation = useNavigation();
 
   const handelAddAvatar = () => {
-    setIsShowAvatar(true);
+    setIsShowAvatar(!true);
   };
 
   const keyboardHide = () => {
@@ -50,6 +51,10 @@ export default function RegistrationScreen() {
     dispatch(authSignUpUser(user));
 
     setUser(initialUser);
+  };
+
+  const handleBtnShowPassword = () => {
+    setIsShowPassword((prevState) => !prevState);
   };
 
   return (
@@ -117,7 +122,7 @@ export default function RegistrationScreen() {
                     }))
                   }
                   style={{ ...styles.input, marginBottom: 43 }}
-                  secureTextEntry={true}
+                  secureTextEntry={isShowPassword}
                   placeholder="Password"
                   placeholderTextColor={"#BDBDBD"}
                   onFocus={() => setIsShowKeyboard(true)}
@@ -125,6 +130,7 @@ export default function RegistrationScreen() {
                 <TouchableOpacity
                   activeOpacity={0.7}
                   style={styles.btnShowPassword}
+                  onPress={handleBtnShowPassword}
                 >
                   {user.password ? (
                     <Text style={styles.btnShowPasswordTitle}>Show</Text>

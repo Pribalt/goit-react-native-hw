@@ -51,7 +51,8 @@ const CreatePostsScreen = () => {
       const photo = await camera.takePictureAsync();
       setPhoto(photo.uri);
     } catch (error) {
-      console.log(error);
+      console.log("error", error);
+      console.log("error.message", error.message);
     }
   };
 
@@ -83,6 +84,7 @@ const CreatePostsScreen = () => {
   const uploadPostToServer = async () => {
     try {
       const photo = await uploadPhotoToServer();
+
       await addDoc(collection(db, "posts"), {
         photo,
         comment,
@@ -99,7 +101,12 @@ const CreatePostsScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.cameraWrap}>
-        <Camera style={styles.camera} ref={setCamera}>
+        <Camera
+          style={styles.camera}
+          ref={(ref) => {
+            setCamera(ref);
+          }}
+        >
           {photo && (
             <View style={styles.takePhotoContainer}>
               <Image
